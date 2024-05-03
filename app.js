@@ -10,16 +10,20 @@ const message = document.querySelector('.message');
 const minutesDisplay = document.querySelector('.minutes');
 const secondsDisplay = document.querySelector('.seconds');
 
-const session = document.querySelector('.minutes');
+const sessionMin = document.querySelector('.minutes');
+// const sessionSec = document.querySelector('.seconds');
 let interval;
-let isTimerRunning = false; //when the application is running -> flag variable
+let isTimerRunning = false; //when the application is running -> flag variablex
 let isTimerStopped = false;
 let totalSeconds;
 
+//we can add an argument to the initialiseTimer in order to prevent when restarting 24:30 when restart to get 24
+//as well as initialise a html variable and it is going to be a field, get the data from the field and feed it to the method
+//to have customized pomodoro
 
 const initialiseTimer = () => {
-    const sessionAmount = Number.parseInt(session.textContent);
-    totalSeconds = sessionAmount * 60;
+    const sessionAmount = Number.parseInt(sessionMin.textContent);
+    totalSeconds = (sessionAmount + 1)  * 60; //Temporary solution for resTimer() method!
 }
 
 const appTimer = () => {
@@ -58,6 +62,10 @@ const stopTimer = () => {
 };
 
 const resTimer = () => {
+    clearInterval(interval);
+    initialiseTimer();
+    updateDisplay();
+    isTimerRunning = false;
 }
 const breakTimer = () => {
 
