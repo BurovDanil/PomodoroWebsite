@@ -6,65 +6,72 @@ const startButton = document.querySelector('.btn-start');
 const restartButton = document.querySelector('.btn-restart');
 const breakButton = document.querySelector('.btn-break');
 const stopButton = document.querySelector('.btn-stop');
+const message = document.querySelector('.message');
+const minutesDisplay = document.querySelector('.minutes');
+const secondsDisplay = document.querySelector('.seconds');
 
 const session = document.querySelector('.minutes');
 let interval;
-let state = true; //when the application is running -> flag variable
-let flag = true;
+let isTimerRunning = false; //when the application is running -> flag variable
+let isTimerStopped = false;
+let totalSeconds;
 
 
-
+const initialiseTimer = () => {
+    const sessionAmount = Number.parseInt(session.textContent);
+    totalSeconds = sessionAmount * 60;
+}
 
 const appTimer = () => {
-    flag = true;
-    const sessionAmount = Number.parseInt(session.textContent)
-    if(state){
-        state = false; //flag
-        let totalSeconds = sessionAmount * 60;
-
-        const updateSeconds = () => {
-            if(flag){
-            //first get the variables 'minutes' / 'seconds'
-            const minutes = document.querySelector('.minutes');
-            const seconds = document.querySelector('.seconds');
-
-            totalSeconds--;
-
-            let minutesLeft = Math.floor(totalSeconds/60);
-            let secondsLeft = totalSeconds % 60; //ensuring that seconds left is a 
-                                                //positive integer between 0 and 59
-
-            if(secondsLeft < 10){
-                seconds.textContent= '0' + secondsLeft;
-            } else{
-                seconds.textContent = secondsLeft;
-            }
-            minutes.textContent = `${minutesLeft}`
-
-            if(minutesLeft === 0 && secondsLeft === 0){
-                // bells.play()
-                clearInterval(interval);
-            }
-        }else{
-            // alert("Exiting!")
-            return;
-        }
-    }
+    if (!isTimerRunning) {
+        isTimerRunning = true;
         interval = setInterval(updateSeconds, 1000);
-    }else{
-        alert('Session has already started.')
+    } else {
+        changeMessage("Session already started!");
     }
-}
-const resTimer = () =>{
+};
 
+const updateDisplay = () => {
+    const minutesLeft = Math.floor(totalSeconds / 60);
+    const secondsLeft = totalSeconds % 60;
+    minutesDisplay.textContent = minutesLeft;
+    secondsDisplay.textContent = secondsLeft < 10 ? '0' + secondsLeft : secondsLeft;
+};
+const updateSeconds = () => {
+    if(totalSeconds <= 0){
+        clearInterval(interval);
+        isTimerRunning = false;
+        changeMessage("Session complete");
+        return;
+    }
+    updateDisplay();
+    totalSeconds--;
 }
+
+
 const stopTimer = () => {
-    flag = false;
+    if (isTimerRunning) {
+        clearInterval(interval);
+        isTimerRunning = false;
+        changeMessage("Timer paused!");
+    }
+};
+
+const resTimer = () => {
 }
 const breakTimer = () => {
 
+}
+const changeMessage = (text) => {
+    message.textContent = text;
+    setTimeout(() => {
+        message.textContent = '';
+    }, 1000);
 }
 startButton.addEventListener('click', appTimer);
 restartButton.addEventListener('click', resTimer);
 stopButton.addEventListener('click', stopTimer);
 breakButton.addEventListener('click', breakTimer);
+
+initialiseTimer();
+updateDisplay();
