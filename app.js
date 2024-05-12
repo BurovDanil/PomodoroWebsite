@@ -19,7 +19,7 @@ let totalSeconds;
 
 //we can add an argument to the initialiseTimer in order to prevent when restarting 24:30 when restart to get 24
 //as well as initialise a html variable and it is going to be a field, get the data from the field and feed it to the method
-//to have customized pomodoro
+//to have customized pomodoro timer
 
 const initialiseTimer = () => {
     const sessionAmount = Number.parseInt(sessionMin.textContent);
