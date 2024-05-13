@@ -16,8 +16,9 @@ const thirdMinButton = document.querySelector('.btn-20');
 
 const sessionMin = document.querySelector('.minutes');
 // const sessionSec = document.querySelector('.seconds');
+
 let interval;
-let isTimerRunning = false; //when the application is running -> flag variablex
+let isTimerRunning = false; //when the application is running
 let isTimerStopped = false;
 let totalSeconds;
 
@@ -74,7 +75,12 @@ const resTimer = () => {
     sessionMin.textContent = 0;
 }
 const breakTimer = () => {
-
+    clearInterval(interval);
+    isTimerRunning = false;
+    sessionMin.textContent = 5;
+    changeMessage("Break time!");
+    initialiseTimer();
+    updateDisplay();
 }
 const changeMessage = (text) => {
     message.textContent = text;
@@ -83,7 +89,7 @@ const changeMessage = (text) => {
     }, 1000);
 }
 const setTimer = (textContent) => {
-    sessionMin = textContent;
+    sessionMin.textContent = textContent;
     initialiseTimer();
     updateDisplay();
 }
@@ -91,8 +97,8 @@ const setTimer = (textContent) => {
     //instead of having a fixed value
 
 firstMinButton.addEventListener('click', () => setTimer(firstMinButton.textContent));
-secondMinButton.addEventListener('click', setTimer(secondMinButton.textContent));
-thirdMinButton.addEventListener('click', setTimer(thirdMinButton.textContent));
+secondMinButton.addEventListener('click', () => setTimer(secondMinButton.textContent));
+thirdMinButton.addEventListener('click', () => setTimer(thirdMinButton.textContent));
 
 startButton.addEventListener('click', appTimer);
 restartButton.addEventListener('click', resTimer);
